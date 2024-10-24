@@ -1,32 +1,30 @@
+name: Build and Push Docker Image
+
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - '**'
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
-  build:
+  build-and-push-docker-image:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v2
 
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v2
+      - name: Login to GitHub Container Registry
+        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and Push Docker image
-        run: |
-          docker buildx build --push --tag ghcr.io/aswinty/tp05:latest .
-
-      - name: Cleanup
-        run: docker system prune -f
+          push: true
+          tags: ghcr.io/sacepefabien/back:latest
