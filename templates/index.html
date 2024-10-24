@@ -114,7 +114,7 @@
             document.getElementById('send-button').style.display = 'none';
 
             // Send request to the Flask backend
-            fetch('http://backend.localhost/api/generate', {
+            fetch('http://backend.localhost:11434/api/generate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
