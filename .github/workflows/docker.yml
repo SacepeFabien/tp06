@@ -26,7 +26,7 @@ jobs:
 
       - name: Build and Push Docker image
         run: |
-          docker buildx build --push --tag ghcr.io/${{ github.repository_owner }}/frontend:latest .
+          docker buildx build --push --tag ghcr.io/aswinty/tp05:latest .
 
       - name: Cleanup
         run: docker system prune -f
